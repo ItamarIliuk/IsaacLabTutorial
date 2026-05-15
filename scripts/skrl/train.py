@@ -93,7 +93,36 @@ from isaaclab.envs import (
 )
 from isaaclab.utils.assets import retrieve_file_path
 from isaaclab.utils.dict import print_dict
-from isaaclab.utils.io import dump_pickle, dump_yaml
+
+try:
+    from isaaclab.utils.io import dump_pickle, dump_yaml
+except ImportError:
+    # Isaac Lab 2.3 packages used with Isaac Sim 5.x may not export these helpers
+    # from isaaclab.utils.io. Keep the training script compatible by providing the
+    # same small serialization behavior locally.
+    import pickle
+    from typing import Any
+
+    import yaml
+    from isaaclab.utils import class_to_dict
+
+    def dump_pickle(filename: str, data: Any):
+        """Saves data into a pickle file safely."""
+        if not filename.endswith("pkl"):
+            filename += ".pkl"
+        os.makedirs(os.path.dirname(filename), exist_ok=True)
+        with open(filename, "wb") as f:
+            pickle.dump(data, f)
+
+    def dump_yaml(filename: str, data: dict | object, sort_keys: bool = False):
+        """Saves data into a YAML file safely."""
+        if not filename.endswith("yaml"):
+            filename += ".yaml"
+        os.makedirs(os.path.dirname(filename), exist_ok=True)
+        if not isinstance(data, dict):
+            data = class_to_dict(data)
+        with open(filename, "w") as f:
+            yaml.dump(data, f, default_flow_style=False, sort_keys=sort_keys)
 
 from isaaclab_rl.skrl import SkrlVecEnvWrapper
 
