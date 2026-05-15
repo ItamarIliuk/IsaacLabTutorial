@@ -59,9 +59,9 @@ class IsaacLabTutorialEnv(DirectRLEnv):
 
         self.visualization_markers = define_markers()
 
-        self.up_dir = torch.tensor([0.0, 0.0, 1.0]).cuda()  
-        self.yaws = torch.zeros((self.cfg.scene.num_envs, 1)).cuda()
-        self.commands = torch.randn((self.cfg.scene.num_envs, 3)).cuda()
+        self.up_dir = torch.tensor([0.0, 0.0, 1.0], device=self.device)
+        self.yaws = torch.zeros((self.cfg.scene.num_envs, 1), device=self.device)
+        self.commands = torch.randn((self.cfg.scene.num_envs, 3), device=self.device)
         self.commands[:,-1] = 0.0
         self.commands = self.commands/torch.linalg.norm(self.commands, dim=1, keepdim=True)
         
@@ -74,11 +74,11 @@ class IsaacLabTutorialEnv(DirectRLEnv):
         offsets = torch.pi*plus - torch.pi*minus
         self.yaws = torch.atan(ratio).reshape(-1,1) + offsets.reshape(-1,1)
 
-        self.marker_locations = torch.zeros((self.cfg.scene.num_envs, 3)).cuda()
-        self.marker_offset = torch.zeros((self.cfg.scene.num_envs, 3)).cuda()
+        self.marker_locations = torch.zeros((self.cfg.scene.num_envs, 3), device=self.device)
+        self.marker_offset = torch.zeros((self.cfg.scene.num_envs, 3), device=self.device)
         self.marker_offset[:,-1] = 0.5
-        self.forward_marker_orientations = torch.zeros((self.cfg.scene.num_envs, 4)).cuda()
-        self.command_marker_orientations = torch.zeros((self.cfg.scene.num_envs, 4)).cuda()
+        self.forward_marker_orientations = torch.zeros((self.cfg.scene.num_envs, 4), device=self.device)
+        self.command_marker_orientations = torch.zeros((self.cfg.scene.num_envs, 4), device=self.device)
         
 
     def _visualize_markers(self):
@@ -90,7 +90,7 @@ class IsaacLabTutorialEnv(DirectRLEnv):
         loc = torch.vstack((loc, loc))
         rots = torch.vstack((self.forward_marker_orientations, self.command_marker_orientations))
 
-        all_envs = torch.arange(self.cfg.scene.num_envs)
+        all_envs = torch.arange(self.cfg.scene.num_envs, device=self.device)
         indices = torch.hstack((torch.zeros_like(all_envs), torch.ones_like(all_envs)))
 
         self.visualization_markers.visualize(loc, rots, marker_indices=indices)
@@ -122,19 +122,19 @@ class IsaacLabTutorialEnv(DirectRLEnv):
         # total_reward = forward_reward*alignment_reward
         # total_reward = forward_reward*alignment_reward + forward_reward
         # total_reward = forward_reward*torch.exp(alignment_reward)
-        return total_reward
+        return total_reward.squeeze(-1)
 
     def _get_dones(self) -> tuple[torch.Tensor, torch.Tensor]:
         time_out = self.episode_length_buf >= self.max_episode_length - 1
 
-        return False, time_out
+        return torch.zeros_like(time_out), time_out
 
     def _reset_idx(self, env_ids: Sequence[int] | None):
         if env_ids is None:
             env_ids = self.robot._ALL_INDICES
         super()._reset_idx(env_ids)
 
-        self.commands[env_ids] = torch.randn((len(env_ids), 3)).cuda()
+        self.commands[env_ids] = torch.randn((len(env_ids), 3), device=self.device)
         self.commands[env_ids,-1] = 0.0
         self.commands[env_ids] = self.commands[env_ids]/torch.linalg.norm(self.commands[env_ids], dim=1, keepdim=True)
         
@@ -151,4 +151,3 @@ class IsaacLabTutorialEnv(DirectRLEnv):
 
         self.robot.write_root_state_to_sim(default_root_state, env_ids)
         self._visualize_markers()
-
