@@ -130,6 +130,17 @@ import isaac_lab_tutorial.tasks  # noqa: F401
 algorithm = args_cli.algorithm.lower()
 
 
+def set_agent_eval_mode(agent):
+    """Set a skrl agent to evaluation mode across skrl API versions."""
+    if hasattr(agent, "set_running_mode"):
+        agent.set_running_mode("eval")
+    elif hasattr(agent, "set_mode"):
+        agent.set_mode("eval")
+    elif hasattr(agent, "models"):
+        for model in agent.models.values():
+            model.eval()
+
+
 def main():
     """Play with skrl agent."""
     # configure the ML framework into the global skrl variable
@@ -201,7 +212,7 @@ def main():
     print(f"[INFO] Loading model checkpoint from: {resume_path}")
     runner.agent.load(resume_path)
     # set agent to evaluation mode
-    runner.agent.set_running_mode("eval")
+    set_agent_eval_mode(runner.agent)
 
     # reset environment
     obs, _ = env.reset()
