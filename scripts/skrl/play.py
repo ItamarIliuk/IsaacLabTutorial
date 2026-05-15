@@ -141,6 +141,16 @@ def set_agent_eval_mode(agent):
             model.eval()
 
 
+def agent_act(agent, obs):
+    """Query a skrl agent across act signature variants."""
+    try:
+        return agent.act(obs, states=None, timestep=0, timesteps=0)
+    except TypeError as exc:
+        if "states" not in str(exc):
+            raise
+        return agent.act(obs, timestep=0, timesteps=0)
+
+
 def main():
     """Play with skrl agent."""
     # configure the ML framework into the global skrl variable
@@ -224,7 +234,7 @@ def main():
         # run everything in inference mode
         with torch.inference_mode():
             # agent stepping
-            outputs = runner.agent.act(obs, timestep=0, timesteps=0)
+            outputs = agent_act(runner.agent, obs)
             # - multi-agent (deterministic) actions
             if hasattr(env, "possible_agents"):
                 actions = {a: outputs[-1][a].get("mean_actions", outputs[0][a]) for a in env.possible_agents}
