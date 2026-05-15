@@ -83,8 +83,41 @@ elif args_cli.ml_framework.startswith("jax"):
     from skrl.utils.runner.jax import Runner
 
 from isaaclab.envs import DirectMARLEnv, multi_agent_to_single_agent
+from isaaclab.utils.assets import ISAACLAB_NUCLEUS_DIR, retrieve_file_path
 from isaaclab.utils.dict import print_dict
-from isaaclab.utils.pretrained_checkpoint import get_published_pretrained_checkpoint
+
+try:
+    from isaaclab.utils.pretrained_checkpoint import get_published_pretrained_checkpoint
+except ModuleNotFoundError:
+    _WORKFLOW_PRETRAINED_CHECKPOINT_FILENAMES = {
+        "rl_games": "checkpoint.pth",
+        "rsl_rl": "checkpoint.pt",
+        "sb3": "checkpoint.zip",
+        "skrl": "checkpoint.pt",
+    }
+
+    def get_published_pretrained_checkpoint(workflow: str, task_name: str) -> str | None:
+        """Get a published pretrained checkpoint path for Isaac Lab versions without this helper."""
+        checkpoint_filename = _WORKFLOW_PRETRAINED_CHECKPOINT_FILENAMES[workflow]
+        checkpoint_path = os.path.join(
+            ISAACLAB_NUCLEUS_DIR,
+            "PretrainedCheckpoints",
+            workflow,
+            task_name,
+            checkpoint_filename,
+        )
+        download_dir = os.path.join(".pretrained_checkpoints", workflow, task_name)
+        resume_path = os.path.join(download_dir, checkpoint_filename)
+
+        if os.path.exists(resume_path):
+            print("Using pre-fetched pre-trained checkpoint")
+            return resume_path
+
+        print(f"Fetching pre-trained checkpoint : {checkpoint_path}")
+        try:
+            return retrieve_file_path(checkpoint_path, download_dir)
+        except Exception:
+            return None
 
 from isaaclab_rl.skrl import SkrlVecEnvWrapper
 
