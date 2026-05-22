@@ -1,0 +1,27 @@
+{
+  "python.defaultInterpreterPath": "/isaac-sim/kit/python/bin/python3",
+  "python.terminal.activateEnvironment": false,
+  "python.analysis.extraPaths": [
+    "${workspaceFolder}/workshop/source",
+    "/isaac-sim/exts/omni.isaac.lab/source",
+    "/isaac-sim/kit/python/lib/python3.10/site-packages"
+  ],
+  "jupyter.jupyterServerType": "local",
+  "jupyter.notebookFileRoot": "${workspaceFolder}/workshop/notebooks",
+  "editor.formatOnSave": true,
+  "editor.rulers": [100],
+  "editor.tabSize": 4,
+  "files.exclude": {
+    "**/__pycache__": true,
+    "**/*.pyc": true
+  },
+  "python.analysis.typeCheckingMode": "basic",
+  "notebook.cellToolbarLocation": {
+    "default": "right",
+    "jupyter-notebook": "left"
+  },
+  "terminal.integrated.env.linux": {
+    "ISAAC_PATH": "/isaac-sim",
+    "ISAACSIM_PATH": "/isaac-sim"
+  }
+}

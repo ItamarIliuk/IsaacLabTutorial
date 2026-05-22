@@ -1,0 +1,45 @@
+{
+  "name": "Workshop Quadrúpede - Edição de Código (Codespaces)",
+
+  "image": "mcr.microsoft.com/devcontainers/python:3.10-bullseye",
+
+  "forwardPorts": [8888, 6006],
+  "portsAttributes": {
+    "8888": { "label": "JupyterLab", "onAutoForward": "openBrowser" },
+    "6006": { "label": "TensorBoard",  "onAutoForward": "notify" }
+  },
+
+  "postCreateCommand": "bash ${containerWorkspaceFolder}/workshop/setup/setup_codespaces.sh",
+
+  "hostRequirements": {
+    "cpus": 4,
+    "memory": "16gb",
+    "storage": "32gb"
+  },
+
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python",
+        "ms-python.pylance",
+        "ms-python.debugpy",
+        "ms-toolsai.jupyter",
+        "ms-toolsai.jupyter-keymap",
+        "ms-toolsai.jupyter-renderers",
+        "ms-toolsai.vscode-jupyter-cell-tags",
+        "redhat.vscode-yaml",
+        "eamodio.gitlens",
+        "streetsidesoftware.code-spell-checker",
+        "streetsidesoftware.code-spell-checker-portuguese-brazilian"
+      ],
+      "settings": {
+        "python.defaultInterpreterPath": "/usr/local/bin/python3",
+        "jupyter.jupyterServerType": "local",
+        "jupyter.notebookFileRoot": "${workspaceFolder}/workshop/notebooks",
+        "python.analysis.extraPaths": [
+          "${workspaceFolder}/workshop/source"
+        ]
+      }
+    }
+  }
+}

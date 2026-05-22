@@ -1,0 +1,18 @@
+{
+  "recommendations": [
+    "ms-python.python",
+    "ms-python.pylance",
+    "ms-python.debugpy",
+    "ms-toolsai.jupyter",
+    "ms-toolsai.jupyter-keymap",
+    "ms-toolsai.jupyter-renderers",
+    "ms-toolsai.vscode-jupyter-cell-tags",
+    "ms-vscode-remote.remote-containers",
+    "ms-vscode-remote.remote-ssh",
+    "ms-azuretools.vscode-docker",
+    "redhat.vscode-yaml",
+    "eamodio.gitlens",
+    "streetsidesoftware.code-spell-checker",
+    "streetsidesoftware.code-spell-checker-portuguese-brazilian"
+  ]
+}
