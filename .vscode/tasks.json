@@ -1,0 +1,80 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "🚀 Abrir JupyterLab",
+      "type": "shell",
+      "command": "/isaac-sim/python.sh -m jupyter lab --ip=0.0.0.0 --port=8888 --no-browser --notebook-dir=${workspaceFolder}/workshop/notebooks",
+      "group": "build",
+      "isBackground": true,
+      "presentation": { "reveal": "always", "panel": "dedicated" },
+      "problemMatcher": []
+    },
+    {
+      "label": "🚀 JupyterLab (Codespaces)",
+      "type": "shell",
+      "command": "jupyter lab --ip=0.0.0.0 --port=8888 --no-browser --notebook-dir=${workspaceFolder}/workshop/notebooks",
+      "group": "build",
+      "isBackground": true,
+      "presentation": { "reveal": "always", "panel": "dedicated" },
+      "problemMatcher": []
+    },
+    {
+      "label": "📊 TensorBoard",
+      "type": "shell",
+      "command": "tensorboard --logdir=${workspaceFolder}/logs --host=0.0.0.0 --port=6006",
+      "group": "build",
+      "isBackground": true,
+      "presentation": { "reveal": "always", "panel": "dedicated" },
+      "problemMatcher": []
+    },
+    {
+      "label": "🤖 Treinar Quadrúpede (4096 envs)",
+      "type": "shell",
+      "command": "cd ${workspaceFolder} && /isaac-sim/python.sh workshop/scripts/treinar.py --task Workshop-Anymal-v0 --headless --num_envs 4096",
+      "group": "build",
+      "presentation": { "reveal": "always", "panel": "shared" },
+      "problemMatcher": []
+    },
+    {
+      "label": "🤖 Treinar Quadrúpede (512 envs - teste rápido)",
+      "type": "shell",
+      "command": "cd ${workspaceFolder} && /isaac-sim/python.sh workshop/scripts/treinar.py --task Workshop-Anymal-v0 --headless --num_envs 512 --max_iterations 200",
+      "group": "build",
+      "presentation": { "reveal": "always", "panel": "shared" },
+      "problemMatcher": []
+    },
+    {
+      "label": "▶️  Executar Política Treinada",
+      "type": "shell",
+      "command": "cd ${workspaceFolder} && /isaac-sim/python.sh workshop/scripts/jogar.py --task Workshop-Anymal-v0 --load_run workshop_quadrupede_anymal --num_envs 4",
+      "group": "test",
+      "presentation": { "reveal": "always", "panel": "shared" },
+      "problemMatcher": []
+    },
+    {
+      "label": "🔍 Verificar Instalação",
+      "type": "shell",
+      "command": "/isaac-sim/python.sh -c \"import torch; print('CUDA:', torch.cuda.is_available()); import omni.isaac.lab; print('Isaac Lab: OK'); import workshop_quadrupede; print('Workshop: OK')\"",
+      "group": "test",
+      "presentation": { "reveal": "always", "panel": "shared" },
+      "problemMatcher": []
+    },
+    {
+      "label": "📋 Listar Ambientes Disponíveis",
+      "type": "shell",
+      "command": "cd ${workspaceFolder} && /isaac-sim/python.sh -c \"import gymnasium as gym; import workshop_quadrupede; [print(k) for k in sorted(gym.envs.registry.keys()) if 'Workshop' in k or 'Isaac' in k]\"",
+      "group": "test",
+      "presentation": { "reveal": "always", "panel": "shared" },
+      "problemMatcher": []
+    },
+    {
+      "label": "🛠️  Setup Dev Container (primeira vez)",
+      "type": "shell",
+      "command": "bash ${workspaceFolder}/workshop/setup/setup_devcontainer.sh",
+      "group": "build",
+      "presentation": { "reveal": "always", "panel": "shared" },
+      "problemMatcher": []
+    }
+  ]
+}

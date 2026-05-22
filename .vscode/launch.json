@@ -1,0 +1,41 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "🤖 Treinar Quadrúpede (headless, 512 envs)",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}/workshop/scripts/treinar.py",
+      "python": "/isaac-sim/kit/python/bin/python3",
+      "args": [
+        "--task", "Workshop-Anymal-v0",
+        "--headless",
+        "--num_envs", "512"
+      ],
+      "console": "integratedTerminal",
+      "env": {
+        "ACCEPT_EULA": "Y",
+        "PRIVACY_CONSENT": "Y"
+      },
+      "justMyCode": false
+    },
+    {
+      "name": "▶️  Executar Política Treinada",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}/workshop/scripts/jogar.py",
+      "python": "/isaac-sim/kit/python/bin/python3",
+      "args": [
+        "--task", "Workshop-Anymal-v0",
+        "--load_run", "workshop_quadrupede_anymal",
+        "--num_envs", "4"
+      ],
+      "console": "integratedTerminal",
+      "env": {
+        "ACCEPT_EULA": "Y",
+        "PRIVACY_CONSENT": "Y"
+      },
+      "justMyCode": false
+    }
+  ]
+}
