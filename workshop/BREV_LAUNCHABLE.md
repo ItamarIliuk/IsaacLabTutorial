@@ -2,6 +2,8 @@
 
 O **Brev Launchable** permite que qualquer participante abra um ambiente GPU na nuvem, **100% configurado e pronto**, com um único clique — sem instalar nada localmente.
 
+> Este fluxo segue o modelo de uso do repositório [`isaac-launchable`](https://github.com/ItamarIliuk/isaac-launchable): deploy no Brev, aguardar setup automático e abrir serviços via **Secure Links**.
+
 ---
 
 ## Abrir o Ambiente Agora
@@ -83,16 +85,17 @@ O Brev mostrará o log de setup em tempo real. Aguarde a mensagem:
 ✅ Workshop configurado e pronto!
 ```
 
-### 4. Acessar JupyterLab
+### 4. Acessar JupyterLab (Secure Links)
 
-No painel do Brev, clique em **"Open" → Porta 8888**.
+No painel da instância no Brev:
+1. Vá até **Using Secure Links**
+2. Abra o link da porta **8888** (JupyterLab)
 
-Ou use o túnel SSH do Brev CLI:
+Se preferir via CLI/túnel local:
 ```bash
 brev open workshop-quadrupede
+# depois acesse http://localhost:8888
 ```
-
-Acesse: **http://localhost:8888**
 
 ### 5. Executar os notebooks
 

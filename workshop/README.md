@@ -45,11 +45,24 @@ Bem-vindo! Em **2h30min** você vai:
 # 3. Siga: setup/setup_vastai.sh
 ```
 
-### Opção 2: NVIDIA Brev
+### Opção 2: NVIDIA Brev Launchable (recomendado)
 ```bash
-# 1. Crie conta em https://brev.dev
-# 2. Siga: setup/setup_brev.sh
+# 1. Crie conta em https://brev.nvidia.com
+# 2. Use o launchable: workshop/BREV_LAUNCHABLE.md
+# 3. Faça deploy e aguarde o setup automático
 ```
+
+---
+
+## Sessão rápida: instalar e rodar com NVIDIA Brev Launchable
+
+1. Abra o guia: [`workshop/BREV_LAUNCHABLE.md`](./BREV_LAUNCHABLE.md)
+2. Clique em **Abrir no NVIDIA Brev** e faça o deploy da instância GPU.
+3. Aguarde o setup automático finalizar.
+4. No Brev, abra o link seguro da porta `8888` para acessar o JupyterLab.
+5. Execute os notebooks na sequência (`00` → `04`) e inicie o treinamento.
+
+> Dica: pause a instância ao final para economizar créditos e retome depois sem perder o ambiente.
 
 ---
 
@@ -116,7 +129,7 @@ workshop/
 
 ## Pré-requisitos
 
-- Conta no [Vast.ai](https://cloud.vast.ai/?ref_id=374137/) **ou** [NVIDIA Brev](https://brev.dev/)
+- Conta no [Vast.ai](https://cloud.vast.ai/?ref_id=374137/) **ou** [NVIDIA Brev](https://brev.nvidia.com/)
 - Navegador moderno (Chrome recomendado)
 - Conhecimento básico de Python e redes neurais
 
