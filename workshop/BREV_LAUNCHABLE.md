@@ -2,7 +2,7 @@
 
 O **Brev Launchable** permite que qualquer participante abra um ambiente GPU na nuvem, **100% configurado e pronto**, com um único clique — sem instalar nada localmente.
 
-> Este fluxo segue o modelo de uso do repositório [`isaac-launchable`](https://github.com/ItamarIliuk/isaac-launchable): deploy no Brev, aguardar setup automático e abrir serviços via **Secure Links**.
+> Este fluxo segue o modelo de uso do repositório [`isaac-launchable`](https://github.com/ItamarIliuk/isaac-launchable), um template de referência para ambientes Isaac no Brev: deploy, setup automático e acesso via **Secure Links**.
 
 ---
 

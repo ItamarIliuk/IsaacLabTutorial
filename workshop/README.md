@@ -56,7 +56,7 @@ Bem-vindo! Em **2h30min** você vai:
 
 ## Sessão rápida: instalar e rodar com NVIDIA Brev Launchable
 
-1. Abra o guia: [`workshop/BREV_LAUNCHABLE.md`](./BREV_LAUNCHABLE.md)
+1. Consulte o guia completo: [`workshop/BREV_LAUNCHABLE.md`](./BREV_LAUNCHABLE.md)
 2. Clique em **Abrir no NVIDIA Brev** e faça o deploy da instância GPU.
 3. Aguarde o setup automático finalizar.
 4. No Brev, abra o link seguro da porta `8888` para acessar o JupyterLab.
