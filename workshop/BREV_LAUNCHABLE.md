@@ -1,206 +1,195 @@
 # NVIDIA Brev Launchable
 
-O **Brev Launchable** permite que qualquer participante abra um ambiente GPU na nuvem, **100% configurado e pronto**, com um único clique — sem instalar nada localmente.
+O **Brev Launchable** permite que qualquer participante abra um ambiente GPU na nuvem com Isaac Lab pré-instalado, VS Code no browser e streaming do Isaac Sim — **tudo com um único clique**, sem instalar nada localmente.
 
-> Este fluxo segue o modelo de uso do repositório [`isaac-launchable`](https://github.com/ItamarIliuk/isaac-launchable), um template de referência para ambientes Isaac no Brev: deploy, setup automático e acesso via **Secure Links**.
+> Este fluxo usa o [`isaac-launchable`](https://github.com/ItamarIliuk/isaac-launchable) como ambiente base: Isaac Lab 2.3 + Isaac Sim 5.1 rodando em containers Docker, acessíveis via VS Code no browser.
 
 ---
 
-## Abrir o Ambiente Agora
+## 1. Abrir o Ambiente
 
-[![Abrir no NVIDIA Brev](https://brev.nvidia.com/button.svg)](https://brev.nvidia.com/launchable/deploy?repoUrl=https://github.com/ItamarIliuk/IsaacLabTutorial)
+[![Abrir no NVIDIA Brev](https://brev-assets.s3.us-west-1.amazonaws.com/nv-lb-dark.svg)](https://brev.nvidia.com/launchable/deploy/now?launchableID=env-35JP2ywERLgqtD0b0MIeK1HnF46)
 
 > **Ou acesse diretamente:**
 > ```
-> https://brev.nvidia.com/launchable/deploy?repoUrl=https://github.com/ItamarIliuk/IsaacLabTutorial
+> https://brev.nvidia.com/launchable/deploy/now?launchableID=env-35JP2ywERLgqtD0b0MIeK1HnF46
 > ```
 
 ---
 
-## O que acontece ao clicar?
+## 2. O que sobe automaticamente
 
-1. Brev cria uma instância GPU na nuvem com **Isaac Sim 5.1.0** pré-instalado
-2. O script `.brev/setup.sh` roda **automaticamente** e:
-   - Instala **Isaac Lab** (framework de RL)
-   - Clona e instala o **pacote do workshop** (`workshop_quadrupede`)
-   - Instala **JupyterLab**, TensorBoard e matplotlib
-   - Inicia JupyterLab na porta 8888
-   - Inicia TensorBoard na porta 6006
-3. Em ~10 minutos, o ambiente está pronto
+Ao clicar em **Deploy**, o Brev provisiona a instância GPU e inicia 3 containers:
 
----
+| Container | Função | Acesso |
+|-----------|--------|--------|
+| `vscode` | VS Code no browser (editor + terminal) | URL principal (porta 80) |
+| `web-viewer` | Streaming do Isaac Sim | `<sua-url>/viewer` |
+| `nginx` | Proxy reverso / Secure Links | — |
 
-## Configuração do Launchable
-
-### Imagem Docker recomendada
-
-```
-nvcr.io/nvidia/isaac-sim:5.1.0
-```
-
-Ao criar o Launchable no painel do Brev, configure:
-
-| Parâmetro | Valor |
-|-----------|-------|
-| **Imagem** | `nvcr.io/nvidia/isaac-sim:5.1.0` |
-| **GPU** | RTX 3090 ou RTX 4090 (requer RT Cores) |
-| **RAM** | Mínimo 32 GB |
-| **Disco** | Mínimo 60 GB |
-| **Portas** | 8888, 6006, 49100, 47995 |
-
-### Portas expostas
-
-| Porta | Serviço | Acesso |
-|-------|---------|--------|
-| `8888` | JupyterLab | `http://localhost:8888` |
-| `6006` | TensorBoard | `http://localhost:6006` |
-| `49100` | Isaac Sim WebSocket | Streaming 3D |
-| `47995` | Omniverse WebRTC | Visualização |
+> **Tempo de setup:** ~5–10 min na primeira vez (download das imagens Docker).
 
 ---
 
-## Passo a Passo para Participantes
+## 3. Passo a Passo para Participantes
 
-### 1. Criar conta NVIDIA Brev
+### Passo 1 — Criar conta NVIDIA Brev
 
 Acesse [brev.nvidia.com](https://brev.nvidia.com) e crie uma conta gratuita.
 
-> **Novos usuários ganham créditos gratuitos** para as primeiras horas de GPU.
+> **Novos usuários ganham créditos** para as primeiras horas de GPU.
 
-### 2. Lançar o Launchable
+---
 
-Clique no botão acima ou acesse o link do Launchable.
+### Passo 2 — Fazer o deploy do Launchable
 
-Na tela de configuração:
-- **Nome:** `workshop-quadrupede` (ou qualquer nome)
-- **GPU:** Selecione RTX 3090 ou 4090
-- **Imagem:** `nvcr.io/nvidia/isaac-sim:5.1.0`
-- Clique em **"Deploy"**
+Clique no botão acima. Na página do Brev:
 
-### 3. Aguardar o setup automático (~10 min)
+1. Clique em **"Deploy Launchable"**
+2. Aguarde a instância ficar com status **Running** e o setup concluir
 
-O Brev mostrará o log de setup em tempo real. Aguarde a mensagem:
+---
 
-```
-✅ Workshop configurado e pronto!
-```
+### Passo 3 — Acessar o VS Code no browser
 
-### 4. Acessar JupyterLab (Secure Links)
+Na página da instância no Brev:
 
-No painel da instância no Brev:
-1. Vá até **Using Secure Links**
-2. Abra o link da porta **8888** (JupyterLab)
+1. Vá até a seção **"Using Secure Links"**
+2. Clique na seta ao lado do link chamado **"isaac"**
+3. Faça login com sua conta NVIDIA Brev
+4. O VS Code abrirá no browser — pronto para usar
 
-Se preferir via CLI/túnel local:
+---
+
+### Passo 4 — Clonar o repositório do workshop
+
+Dentro do VS Code, abra um terminal (`Ctrl+` `` ` ``) e execute:
+
 ```bash
-brev open workshop-quadrupede
-# depois acesse http://localhost:8888
+cd /workspace
+git clone https://github.com/ItamarIliuk/IsaacLabTutorial.git
+cd IsaacLabTutorial
 ```
 
-### 5. Executar os notebooks
+Em seguida, instale o pacote do workshop:
 
-Na interface do JupyterLab, abra os notebooks na ordem:
+```bash
+/workspace/isaaclab/isaaclab.sh -p -m pip install -e workshop/source/
+```
+
+---
+
+### Passo 5 — Abrir os notebooks
+
+No explorador de arquivos do VS Code, navegue até:
+
+```
+/workspace/IsaacLabTutorial/workshop/notebooks/
+```
+
+Abra os notebooks em ordem clicando diretamente nos arquivos `.ipynb`:
 
 ```
 📓 00_setup_ambiente.ipynb      ← Verifique o ambiente
 📓 01_introducao_isaac_lab.ipynb
 📓 02_ambiente_quadrupede.ipynb
-📓 03_treinamento_rsl_rl.ipynb  ← Lance o treinamento aqui
-📓 04_resultados.ipynb          ← Visualize o robô andando
+📓 03_treinamento_rsl_rl.ipynb  ← Configure e lance o treinamento
+📓 04_resultados.ipynb          ← Analise as curvas de aprendizado
 ```
 
-### 6. Treinar o quadrúpede
+---
 
-Via terminal no JupyterLab (ou via SSH):
+### Passo 6 — Treinar o quadrúpede
+
+No terminal do VS Code:
 
 ```bash
-cd ~/workshop
-/isaac-sim/python.sh workshop/scripts/treinar.py \
+cd /workspace/IsaacLabTutorial
+/workspace/isaaclab/isaaclab.sh -p workshop/scripts/treinar.py \
   --task Workshop-Anymal-v0 \
   --headless \
   --num_envs 4096
 ```
 
-Monitore o progresso no TensorBoard:
-```bash
-# Acesse: http://localhost:6006
-```
+> Use `--num_envs 512` para um teste mais rápido durante o workshop.
 
-### 7. Executar a política treinada
+---
+
+### Passo 7 — Visualizar a política treinada
+
+Para ver o robô andando com streaming no browser:
 
 ```bash
-/isaac-sim/python.sh workshop/scripts/jogar.py \
+/workspace/isaaclab/isaaclab.sh -p workshop/scripts/jogar.py \
   --task Workshop-Anymal-v0 \
   --load_run workshop_quadrupede_anymal \
-  --num_envs 4
+  --num_envs 4 \
+  --livestream 2
 ```
+
+Quando aparecer `Simulation App Startup Complete` no terminal:
+
+1. Abra uma nova aba no browser
+2. Cole a mesma URL do VS Code, trocando o final por `/viewer`
+   - Exemplo: `https://isaac.brevlab-1234/viewer`
+3. Aguarde o stream iniciar (a página mostrará "Waiting for stream...")
 
 ---
 
 ## Reinicialização Rápida
 
-Uma das grandes vantagens do Brev Launchable é que o ambiente **persiste entre sessões**. Você pode:
+O ambiente **persiste entre sessões** — pause a instância para economizar créditos e retome quando quiser. Os checkpoints de treinamento ficam salvos em:
 
-- **Pausar** a instância (economiza créditos) e **retomar** quando quiser
-- O JupyterLab e TensorBoard **reiniciam automaticamente** com o script `.brev/setup.sh`
-- Seus checkpoints de treinamento ficam salvos em `~/workshop/logs/`
+```
+/workspace/IsaacLabTutorial/logs/workshop_quadrupede_anymal/
+```
 
-### Para reiniciar os serviços manualmente:
+Se os containers pararem, reinicie com:
 
 ```bash
-bash ~/workshop/.brev/setup.sh
+cd /workspace/isaac-launchable/isaac-lab
+docker compose up -d
 ```
 
 ---
 
 ## Comparação de Plataformas
 
-| Plataforma | Setup | GPU | Custo estimado | Reinício rápido |
-|------------|-------|-----|----------------|----------------|
-| **Brev Launchable** | 1 clique ✨ | RTX configurável | ~$0.40/h | ✅ Persistente |
-| Vast.ai | Manual (10 min) | RTX marketplace | ~$0.30–0.80/h | ⚠️ Recria container |
-| VS Code + Docker | Manual (local) | GPU própria | Custo da GPU | ✅ Local |
-| GitHub Codespaces | 1 clique | CPU/A10G | ~$0.18/h | ⚠️ Sem Isaac Sim |
-
----
-
-## Estrutura do Launchable
-
-```
-.brev/
-└── setup.sh          ← Executado automaticamente pelo Brev
-
-workshop/
-├── notebooks/        ← Abertos no JupyterLab (porta 8888)
-├── scripts/
-│   ├── treinar.py    ← Treinamento PPO
-│   └── jogar.py      ← Inferência da política
-└── setup/
-    └── setup_brev.sh ← Guia manual alternativo
-```
+| Plataforma | Setup | Interface | Custo estimado | Reinício rápido |
+|------------|-------|-----------|----------------|-----------------|
+| **Brev Launchable** | 1 clique ✨ | VS Code + viewer no browser | ~$0.40–0.80/h | ✅ Persistente |
+| Vast.ai | ~10 min manual | Terminal / JupyterLab | ~$0.30–0.80/h | ⚠️ Recria container |
+| VS Code + Docker local | Pré-download (~40 GB) | VS Code local | Custo da GPU | ✅ Local |
+| GitHub Codespaces | 1 clique | VS Code no browser | ~$0.18/h | ⚠️ Sem Isaac Sim |
 
 ---
 
 ## Solução de Problemas
 
-**Setup não completou?**
+**Containers não inicializaram?**
 ```bash
-cat /tmp/workshop_setup.log
-# ou
-bash ~/workshop/.brev/setup.sh 2>&1 | tee /tmp/setup_retry.log
+# Ver status dos containers
+docker ps
+
+# Reiniciar tudo
+cd /workspace/isaac-launchable/isaac-lab
+docker compose down && docker compose up -d
 ```
 
-**JupyterLab não abre?**
+**Viewer mostra "Waiting for stream..." por muito tempo?**
+- Aguarde o terminal mostrar `Simulation App Startup Complete`
+- Atualize a aba do viewer (F5)
+- Verifique se o container `web-viewer` está ativo: `docker ps | grep viewer`
+
+**Pacote workshop não encontrado?**
 ```bash
-# Verificar se está rodando
-ps aux | grep jupyter
-# Reiniciar
-/isaac-sim/python.sh -m jupyter lab --ip=0.0.0.0 --port=8888 --no-browser \
-  --notebook-dir=~/workshop/workshop/notebooks --NotebookApp.token=''
+cd /workspace/IsaacLabTutorial
+/workspace/isaaclab/isaaclab.sh -p -m pip install -e workshop/source/
+/workspace/isaaclab/isaaclab.sh -p -c "import workshop_quadrupede; print('OK')"
 ```
 
 **GPU não detectada?**
 ```bash
 nvidia-smi
-/isaac-sim/python.sh -c "import torch; print(torch.cuda.is_available(), torch.cuda.get_device_name(0))"
+/workspace/isaaclab/isaaclab.sh -p -c "import torch; print(torch.cuda.is_available())"
 ```
