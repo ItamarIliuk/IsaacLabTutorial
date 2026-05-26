@@ -12,6 +12,6 @@ gym.register(
     disable_env_checker=True,
     kwargs={
         "env_cfg_entry_point": "workshop_quadrupede.envs:AnymalWorkshopEnvCfg",
-        "rsl_rl_cfg_entry_point": f"{__name__}.agents.rsl_rl_ppo_cfg:AnymalWorkshopPPORunnerCfg",
+        "rsl_rl_cfg_entry_point": f"{__name__}.agents.flat_env_ppo_cfg:AnymalWorkshopPPORunnerCfg",
     },
 )
